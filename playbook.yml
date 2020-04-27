@@ -1,0 +1,80 @@
+---
+- hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+
+  tasks: 
+
+    - include_vars: endpoint.yml
+
+    - name:  Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'postgresql-client-10']
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+
+    - name: Add user ubuntu on docker group
+      user:
+        name: ubuntu
+        groups: docker
+
+    - name: Clone TechTestApp
+      git:
+        repo: 'https://github.com/servian/TechTestApp.git'
+        dest: /home/ubuntu/TechTestApp
+        clone: yes
+      tags:
+        - git
+
+    - name: Configure conf.toml file
+      template:
+        src: templates/conf.toml.t2
+        dest: /home/ubuntu/TechTestApp/conf.toml
+
+    - name: Build App Image
+      docker_image:
+        name: techtestapp
+        tag: latest
+        path: /home/ubuntu/TechTestApp
+        source: build
+        state: present
+
+    - name: Create table and seed it with test data
+      docker_container:
+        name: techtestapp
+        image: "techtestapp:latest"
+        state: started
+        command: "updatedb -s"
+
+    - name: Run App
+      docker_container:
+        name: techtestapp
+        image: "techtestapp:latest"
+        state: started
+        command: serve
+        ports:
+        - "80:3000"

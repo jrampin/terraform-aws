@@ -12,7 +12,7 @@ Requirements
 * Terraform 0.12
 * Ansible 2.9
 * AWSCLI 
-* Make sure you have your priv/pub key like ~/.ssh/id_rsa.pub - If your priv/pub key is different, you can change it on main.tf file.
+* Make sure you have your priv/pub key like ~/.ssh/id_rsa.pub - If your priv/pub key is different, you can change it on main.tf
 
 Variables
 --------------
@@ -26,7 +26,7 @@ Example
 Once you clone this repo:
 
     # Access the folder
-    cd techapp
+    cd terraform-aws
     
     # Set Access and Security key
     aws configure
@@ -56,8 +56,10 @@ And you should be able to browser the server_ip url on port 80.
 Improvements
 ----------------
 
-* Remote state - move local state to a a s3 bucket and DynamoDB (make sure you to enable Bucket Versioning on the S3 bucket to allow for state recovery in the case of accidental deletions and human error.)
+* Remote state - move local state to a a s3 bucket and DynamoDB (make sure to enable Bucket Versioning on the S3 bucket to allow for state recovery in the case of accidental deletions and human error.)
 
 * Implement secret vaults and remove plain/hard-coded passwords out of the files
 
 * EKS
+
+* Create modules

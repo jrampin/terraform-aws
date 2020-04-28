@@ -56,7 +56,7 @@ And you should be able to browser the server_ip url on port 80.
 Improvements
 ----------------
 
-* Remote state - move local state to a a s3 bucket and DynamoDB (make sure to enable Bucket Versioning on the S3 bucket to allow for state recovery in the case of accidental deletions and human error.)
+* Remote state - As this require manual task in your AWS account, it is available in the remote_state branch
 
 * Implement secret vaults and remove plain/hard-coded passwords out of the files
 

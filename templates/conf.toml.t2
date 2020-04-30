@@ -1,5 +1,5 @@
 "DbUser" = "postgres"
-"DbPassword" = "7gVLcH3LfqhFTHup"
+"DbPassword" = "{{ db_pass }}"
 "DbName" = "app"
 "DbPort" = "5432"
 "DbHost" = "{{ db_endpoint }}"

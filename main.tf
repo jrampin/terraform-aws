@@ -26,7 +26,7 @@ resource "aws_instance" "ec2_instance" {
   key_name               = aws_key_pair.terraform_key.id
   subnet_id              = aws_subnet.public_subnet.id
   depends_on = [
-    aws_db_instance.db,
+    aws_db_instance.db["appdb"],
   ]
 
   tags = {

@@ -58,8 +58,6 @@ Improvements
 
 * Remote state - As this require manual task in your AWS account, it is available in the remote_state branch
 
-* Implement secret vaults and remove plain/hard-coded passwords out of the files
-
 * EKS
 
 * Create modules
